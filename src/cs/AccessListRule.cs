@@ -12,9 +12,13 @@ namespace AsaParser {
         public string Number;
         public string Remark;
         public string Action;
+        public string ProtocolType;
         public string Protocol;
+        public string SourceType;
         public string Source;
+        public string DestinationType;
         public string Destination;
+        public string ServiceType;
         public string Service;
         public bool InActive;
     }

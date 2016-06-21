@@ -51,16 +51,16 @@ function Get-AsaAccessList {
                     (?<action>[^\ ]+?)
                     
                     # protocol
-                    \ (?<protgroup>object-group\ )?(?<protocol>[^\ ]+?)
+                    \ (?<prottype>object-group\ )?(?<protocol>[^\ ]+?)
                     
                     # source
-                    \ ((?<srchost>host|object-group|object)\ )?(?<source>[^\ ]+)
+                    \ ((?<srctype>host|object-group|object)\ )?(?<source>[^\ ]+)
                     
                     # destination
-                    \ ((?<dsthost>host|object-group|object)\ )?(?<destination>[^\ ]+)
+                    \ ((?<dsttype>host|object-group|object)\ )?(?<destination>[^\ ]+)
                     
                     # service
-                    (\ ((?<srvtype>object-group|eq)\ )?(?<service>[^\ ]+))?
+                    (\ ((?<svctype>object-group|eq)\ )?(?<service>[^\ ]+))?
                     
                     # flags
                     (?<inactive>\ inactive)?
@@ -101,45 +101,17 @@ function Get-AsaAccessList {
             
             $NewObject.Number = $n
             $NewObject.Action = $Match.Groups['action'].Value
+            $NewObject.ProtocolType = $Match.Groups['prottype'].Value
+            $NewObject.Protocol = $Match.Groups['protocol'].Value
+            $NewObject.SourceType = $Match.Groups['sourcetype'].Value
+            $NewObject.Source = $Match.Groups['source'].Value
+            $NewObject.DestinationType = $Match.Groups['dsttype'].Value
+            $NewObject.Destination = $Match.Groups['destination'].Value
+            $NewObject.ServiceType = $Match.Groups['svctype'].Value
+            $NewObject.Service = $Match.Groups['service'].Value
             
-            switch ($Type) {
-                "standard" {
-                    # Source
-                    $SourceType = $Match.Groups['sourcetype'].Value
-                    $Source     = $Match.Groups['source'].Value
-                    switch ($SourceType) {
-                        "host" {
-                            $FullSource = $Source
-                            break
-                        }
-                        default {
-                            $Mask = ConvertTo-MaskLength $Source
-                            Write-Verbose "$VerbosePrefix $SourceType $Source"
-                            $FullSource = $SourceType + '/' + $Mask
-                        }
-                    }
-                    $NewObject.Source = $FullSource
-                    break
-                }
-                "extended" {
-                    $NewObject.Protocol = $Match.Groups['protocol'].Value
-                    
-                    $NewObject.Source = $Match.Groups['source'].Value
-                    if ($Match.Groups['srchost'].Value -eq "host") {
-                        $NewObject.Source += '/32'
-                    }
-                    
-                    $NewObject.Destination = $Match.Groups['destination'].Value
-                    if ($Match.Groups['dsthost'].Value -eq "host") {
-                        $NewObject.Destination += '/32'
-                    }
-                    
-                    $NewObject.Service = $Match.Groups['service'].Value
-                    
-                    if ($Match.Groups['inactive'].Value) {
-                        $NewObject.InActive = $true
-                    }
-                }
+            if ($Match.Groups['inactive'].Value) {
+                $NewObject.InActive = $true
             }
             
             $NewAcl.Rules += $NewObject
