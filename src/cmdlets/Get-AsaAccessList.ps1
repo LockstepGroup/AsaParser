@@ -60,7 +60,10 @@ function Get-AsaAccessList {
                     \ ((?<dsttype>host|object-group|object)\ )?(?<destination>[^\ ]+)
                     
                     # service
-                    (\ ((?<svctype>object-group|eq)\ )?(?<service>[^\ ]+))?
+                    (
+                        \ (?<svctype>object-group|eq)\ (?<service>[^\ ]+)|
+                        \ (?<service>echo)
+                    )?
                     
                     # flags
                     (?<inactive>\ inactive)?
@@ -103,7 +106,7 @@ function Get-AsaAccessList {
             $NewObject.Action = $Match.Groups['action'].Value
             $NewObject.ProtocolType = $Match.Groups['prottype'].Value
             $NewObject.Protocol = $Match.Groups['protocol'].Value
-            $NewObject.SourceType = $Match.Groups['sourcetype'].Value
+            $NewObject.SourceType = $Match.Groups['srctype'].Value
             $NewObject.Source = $Match.Groups['source'].Value
             $NewObject.DestinationType = $Match.Groups['dsttype'].Value
             $NewObject.Destination = $Match.Groups['destination'].Value
