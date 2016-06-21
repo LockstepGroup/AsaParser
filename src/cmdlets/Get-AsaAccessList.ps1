@@ -51,7 +51,7 @@ function Get-AsaAccessList {
                     (?<action>[^\ ]+?)
                     
                     # protocol
-                    \ (?<prottype>object-group\ )?(?<protocol>[^\ ]+?)
+                    \ ((?<prottype>object-group)\ )?(?<protocol>[^\ ]+?)
                     
                     # source
                     \ ((?<srctype>host|object-group|object)\ )?(?<source>[^\ ]+)
