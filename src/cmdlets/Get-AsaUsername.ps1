@@ -37,7 +37,7 @@ function Get-AsaUsername {
 		###########################################################################################
 		# Check for the Section
 
-		$Regex = [regex] "username\ (?<name>.+?)\ password\ .+?\ encrypted\ privilege\ (?<priv>\d+)"
+		$Regex = [regex] "username\ (?<name>.+?)\ password\ .+?\ encrypted(\ privilege\ (?<priv>\d+))?"
 		$Match = HelperEvalRegex $Regex $line
 		if ($Match) {
             $NewObject      = "" | Select Name,Privilege,ServiceType
@@ -50,12 +50,13 @@ function Get-AsaUsername {
             $KeepGoing = $true
 			continue
 		}
-<#
+
         # attribute start
-        $Regex = [regex] "tunnel-group\ (?<name>[^\ ]+?)\ (ipsec|webvpn|general)-attributes"
-		$Match = HelperEvalRegex $Regex $line
+        $Regex = [regex] "username\ (?<name>.+?)\ attributes"
+		$Match = HelperEvalRegex $Regex $line -ReturnGroupNum 1
         if ($Match) {
             $KeepGoing = $true
+            $NewObject = $ReturnObject | ? { $_.Name -eq $Match }
             continue
         }
 
@@ -80,20 +81,10 @@ function Get-AsaUsername {
             $EvalParams.LoopName         = 'fileloop'
             
             # Description
-            $EvalParams.ObjectProperty = "PresharedKey"
-            $EvalParams.Regex          = [regex] '^\ +ikev1\ pre-shared-key\ (.+)'
+            $EvalParams.ObjectProperty = "ServiceType"
+            $EvalParams.Regex          = [regex] '^\ +service-type\ (.+)'
             $Eval                      = HelperEvalRegex @EvalParams
-
-            # AddressPool
-            $EvalParams.ObjectProperty = "AddressPool"
-            $EvalParams.Regex          = [regex] '^\ +address-pool\ (.+)'
-            $Eval                      = HelperEvalRegex @EvalParams
-
-            # Policy
-            $EvalParams.ObjectProperty = "Policy"
-            $EvalParams.Regex          = [regex] '^\ +default-group-policy\ (.+)'
-            $Eval                      = HelperEvalRegex @EvalParams
-        }#>
+        }
 	}	
 	return $ReturnObject
 }
