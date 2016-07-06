@@ -167,7 +167,7 @@ Add-Type -ReferencedAssemblies @(
 
 $Output = $CmdletHeader
 
-foreach ($l in $(ls $CmdletPath)) {
+foreach ($l in $(ls $CmdletPath -exclude "*.Tests.*")) {
     $Contents  = gc $l.FullName
     Write-Verbose $l.FullName
     $Output   += $FunctionHeader
