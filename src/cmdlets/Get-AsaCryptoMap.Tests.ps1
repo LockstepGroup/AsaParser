@@ -10,7 +10,7 @@ crypto map outside_map2 2 set ikev1 transform-set ESP-3DES-SHA
 "@
 $TestString = $TestString -split '[\r\n]'
 
-Describe "Get-AsaGroupPolicy" {
+Describe "Get-AsaCryptoMap" {
     It "return 2 objects of the correct type" {
         $CryptoMaps = Get-AsaCryptoMap $TestString
         $CryptoMaps.Count | Should Be 2
