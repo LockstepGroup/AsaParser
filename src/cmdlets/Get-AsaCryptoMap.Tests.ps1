@@ -24,6 +24,9 @@ Describe "Get-AsaCryptoMap" {
     It "set CryptoMap Name correctly" {
         $CryptoMaps[0].Name | Should Be 'outside_map'
     }
+    It "return correct number of CryptoMaps" {
+        $CryptoMaps.Count | Should Be 2
+    }
     It "set Sequence correctly" {
         $CryptoMaps[0].Entries[0].Sequence | Should Be 1
     }
