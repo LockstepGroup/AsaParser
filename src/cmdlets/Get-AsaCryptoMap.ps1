@@ -67,6 +67,14 @@ function Get-AsaCryptoMap {
                 $NewSubObject.Pfs = $true
             }
 
+            # IkeVersion and TransformSet
+            $Regex = [regex] "crypto\ map\ .+\ \d+\ set\ ikev(?<ike>\d+)\ transform-set\ (?<transform>.+)"
+		    $Match = HelperEvalRegex $Regex $line
+            if ($Match) {
+                $NewSubObject.IkeVersion   = $Match.Groups['ike'].Value
+                $NewSubObject.TransformSet = $Match.Groups['transform'].Value
+            }
+
             ##################################
             # Simple Properties
             $EvalParams.VariableToUpdate = ([REF]$NewObject)

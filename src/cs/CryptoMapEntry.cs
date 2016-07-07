@@ -14,5 +14,6 @@ namespace AsaParser {
         public bool Pfs;
         public string Peer;
         public string TransformSet;
+        public int IkeVersion;
     }
 }
