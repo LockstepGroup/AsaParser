@@ -77,15 +77,14 @@ function Get-AsaCryptoMap {
 
             ##################################
             # Simple Properties
-            $EvalParams.VariableToUpdate = ([REF]$NewObject)
+            $EvalParams.VariableToUpdate = ([REF]$NewSubObject)
             $EvalParams.ReturnGroupNum   = 1
             $EvalParams.LoopName         = 'fileloop'
-            <#
-            # Description
-            $EvalParams.ObjectProperty = "ServiceType"
-            $EvalParams.Regex          = [regex] '^\ +service-type\ (.+)'
+            
+            # Peer
+            $EvalParams.ObjectProperty = "Peer"
+            $EvalParams.Regex          = [regex] "crypto\ map\ .+\ \d+\ set\ peer\ ($IpRx)"
             $Eval                      = HelperEvalRegex @EvalParams
-            #>
         }
 	}	
 	return $ReturnObject
