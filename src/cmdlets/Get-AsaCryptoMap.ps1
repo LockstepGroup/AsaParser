@@ -37,42 +37,35 @@ function Get-AsaCryptoMap {
 		###########################################################################################
 		# Check for the Section
 
-        # attribute start
-        $Regex = [regex] "group-policy\ (?<name>.+?)\ attributes"
-		$Match = HelperEvalRegex $Regex $line -ReturnGroupNum 1
-        if ($Match) {
-            $KeepGoing = $true
-            $NewObject = $ReturnObject | ? { $_.Name -eq $Match }
-            continue
-        }
-
-		$Regex = [regex] "group-policy\ (?<name>.+?)\ (?<type>.+)"
+		$Regex = [regex] "crypto\ map\ (?<name>.+)\ (?<num>\d+)\ match\ address\ (?<acl>.+)"
 		$Match = HelperEvalRegex $Regex $line
 		if ($Match) {
-            $NewObject      = "" | Select Name,Type
-            $NewObject.Name = $Match.Groups['name'].Value
-            $NewObject.Type = $Match.Groups['type'].Value
+            $NewObject       = New-Object AsaParser.CryptoMap
+            $NewObject.Name  = $Match.Groups['name'].Value
+            $ReturnObject   += $NewObject
 
-            $ReturnObject    += $NewObject
+            $NewSubObject           = New-Object AsaParser.CryptoMapEntry
+            $NewSubObject.Sequence  = $Match.Groups['num'].Value
+            $NewSubObject.Acl       = $Match.Groups['acl'].Value
+            $NewObject.Entries     += $NewSubObject
             
-            Write-Verbose "$VerbosePrefix found policy $($NewObject.Name)"
+            Write-Verbose "$VerbosePrefix found map $($NewObject.Name)"
             $KeepGoing = $true
 			continue
 		}
 
-        # End object
-        $Regex = [regex] "^[^\ ]"
-		$Match = HelperEvalRegex $Regex $line
-        if ($Match) {
-            $KeepGoing = $false
-            continue
-        }
-
-        if ($KeepGoing -and $NewObject) {
+        if ($KeepGoing) {
             ##################################
             # Special Properties
             $EvalParams = @{}
             $EvalParams.StringToEval = $line
+
+            # Pfs
+            $Regex = [regex] "crypto\ map\ .+\ \d+\ set\ pfs"
+		    $Match = HelperEvalRegex $Regex $line
+            if ($Match) {
+                $NewSubObject.Pfs = $true
+            }
 
             ##################################
             # Simple Properties

@@ -9,6 +9,7 @@ using System.Web;
 
 namespace AsaParser {
 	public class CryptoMapEntry {
+        public int Sequence;
         public string Acl;
         public bool Pfs;
         public string Peer;
