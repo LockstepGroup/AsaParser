@@ -1,4 +1,4 @@
-﻿function Get-AsaGroupPolicy {
+function Get-AsaGroupPolicy {
     [CmdletBinding()]
 	<#
         .SYNOPSIS

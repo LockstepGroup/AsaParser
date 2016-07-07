@@ -1,8 +1,4 @@
-﻿$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
-. "$here\$sut"
-
-$GroupPolicyString = @"
+﻿$GroupPolicyString = @"
 group-policy GroupPolicy_anyconnectvpn internal
 group-policy GroupPolicy_anyconnectvpn attributes
  wins-server none
