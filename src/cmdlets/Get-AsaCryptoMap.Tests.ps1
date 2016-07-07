@@ -18,14 +18,11 @@ Describe "Get-AsaCryptoMap" {
     $CryptoMaps = Get-AsaCryptoMap $TestString
     It "return 2 objects of the correct type" {
         $global:test = $CryptoMaps
-        $CryptoMaps.Count | Should Be 3
+        $CryptoMaps.Count | Should Be 2
         $CryptoMaps[0].GetType().FullName | Should Be AsaParser.CryptoMap
     }
     It "set CryptoMap Name correctly" {
         $CryptoMaps[0].Name | Should Be 'outside_map'
-    }
-    It "return correct number of CryptoMaps" {
-        $CryptoMaps.Count | Should Be 2
     }
     It "set Sequence correctly" {
         $CryptoMaps[0].Entries[0].Sequence | Should Be 1

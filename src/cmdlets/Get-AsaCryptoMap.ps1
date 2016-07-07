@@ -40,10 +40,16 @@ function Get-AsaCryptoMap {
 		$Regex = [regex] "crypto\ map\ (?<name>.+)\ (?<num>\d+)\ match\ address\ (?<acl>.+)"
 		$Match = HelperEvalRegex $Regex $line
 		if ($Match) {
-            $NewObject       = New-Object AsaParser.CryptoMap
-            $NewObject.Name  = $Match.Groups['name'].Value
-            $ReturnObject   += $NewObject
-
+            $Name   = $Match.Groups['name'].Value
+            $Lookup = $ReturnObject | ? { $_.Name -eq $Name}
+            if ($Lookup) {
+                $NewObject = $Lookup
+            } else {
+                $NewObject       = New-Object AsaParser.CryptoMap
+                $NewObject.Name  = $Name
+                $ReturnObject   += $NewObject
+            }
+            
             $NewSubObject           = New-Object AsaParser.CryptoMapEntry
             $NewSubObject.Sequence  = $Match.Groups['num'].Value
             $NewSubObject.Acl       = $Match.Groups['acl'].Value
