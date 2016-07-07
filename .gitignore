@@ -157,3 +157,12 @@ $RECYCLE.BIN/
 
 # testing file (has creds in it)
 testing.ps1
+
+
+# =========================
+# Build detritus
+# =========================
+
+# Pester XML files
+Pester*.xml
+Test*.xml
