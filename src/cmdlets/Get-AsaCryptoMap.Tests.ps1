@@ -8,7 +8,7 @@ $TestString = $TestString -split '[\r\n]'
 
 Describe "Get-AsaGroupPolicy" {
     It "returns valid object" {
-        $Policy = Get-AsaGroupPolicy $TestString
+        $CryptoMaps = Get-AsaCryptoMap $TestString
         $Policy.Name | Should Be "GroupPolicy_anyconnectvpn"
         $Policy.Type | Should Be "internal"
     }
