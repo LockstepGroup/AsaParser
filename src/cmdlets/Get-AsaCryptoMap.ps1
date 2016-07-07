@@ -1,4 +1,4 @@
-function Get-AsaGroupPolicy {
+function Get-AsaCryptoMap {
     [CmdletBinding()]
 	<#
         .SYNOPSIS
@@ -10,7 +10,7 @@ function Get-AsaGroupPolicy {
 		[array]$Config
 	)
 	
-	$VerbosePrefix = "Get-AsaGroupPolicy:"
+	$VerbosePrefix = "Get-AsaCryptoMap:"
 	
     $IpRx = [regex] "(\d+)\.(\d+)\.(\d+)\.(\d+)"
 	
