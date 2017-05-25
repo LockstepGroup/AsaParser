@@ -17,7 +17,7 @@ function Resolve-AsaObject {
 	
     $IpMaskRx = [regex] '^(\d+\.){3}\d+\/\d{1,2}$'
     $IpRangeRx = [regex] '^(\d+\.){3}\d+-(\d+\.){3}\d+$'
-    $ServiceRx = [regex] '^(tcp|udp|ip|icmp)(\/(\d+(-\d+)?|echo|traceroute|echo-reply|time-exceeded|unreachable))?$'
+    $ServiceRx = [regex] '^(tcp|udp|ip|icmp)(\-(tcp|udp|ip|icmp))?(\/(\d+(-\d+)?|echo|traceroute|echo-reply|time-exceeded|unreachable))?$'
     $ProtocolRx = [regex] '^(tcp|udp|ip|icmp|esp|ah)$'
     $ExemptRx = [regex] '^(any)$'
     
