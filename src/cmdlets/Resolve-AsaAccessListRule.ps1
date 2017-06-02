@@ -64,6 +64,9 @@ function Resolve-AsaAccessListRule {
                 'eq' {
                     $ResolvedField = @(($Rule.Protocol + '/' + $FieldValue))
                 }
+                'range' {
+                    $ResolvedField = @(($Rule.Protocol + '/' + ($FieldValue -replace ' ','-')))
+                }
                 host {
                     $ResolvedField = @("$FieldValue/32")
                 }

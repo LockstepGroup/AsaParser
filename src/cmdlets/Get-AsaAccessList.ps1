@@ -62,6 +62,7 @@ function Get-AsaAccessList {
                     # service
                     (
                         \ (?<svctype>object-group|eq)\ (?<service>[^\ ]+)|
+                        \ (?<svctype>range)\ (?<service>\w+\ \w+)|
                         \ (?<service>echo)
                     )?
                     

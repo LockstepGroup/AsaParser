@@ -14,5 +14,10 @@ namespace AsaParser {
         public string Type;
         public List<string> Value;
         public bool IsGroup;
+        public string NatSourceInterface;
+        public string NatDestinationInterface;
+        public string NatType;
+        public string NatSourceAddress;
+        public string ResolvedNatSourceAddress;
     }
 }

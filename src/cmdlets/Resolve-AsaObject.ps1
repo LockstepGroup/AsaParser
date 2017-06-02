@@ -15,16 +15,18 @@ function Resolve-AsaObject {
 	
 	$VerbosePrefix = "Resolve-AsaObject:"
 	
-    $IpMaskRx = [regex] '^(\d+\.){3}\d+\/\d{1,2}$'
-    $IpRangeRx = [regex] '^(\d+\.){3}\d+-(\d+\.){3}\d+$'
-    $ServiceRx = [regex] '^(tcp|udp|ip|icmp)(\-(tcp|udp|ip|icmp))?(\/(\d+(-\d+)?|echo|traceroute|echo-reply|time-exceeded|unreachable))?$'
+    $IpMaskRx   = [regex] '^(\d+\.){3}\d+\/\d{1,2}$'
+    $IpRangeRx  = [regex] '^(\d+\.){3}\d+-(\d+\.){3}\d+$'
+    $ServiceRx  = [regex] '^(tcp|udp|ip|icmp)(\-(tcp|udp|ip|icmp))?(\/(\d+(-\d+)?|echo|traceroute|echo-reply|time-exceeded|unreachable))?$'
     $ProtocolRx = [regex] '^(tcp|udp|ip|icmp|esp|ah)$'
-    $ExemptRx = [regex] '^(any)$'
+    $ExemptRx   = [regex] '^(any)$'
+    $IpRx       = [regex] '^(\d+\.){3}\d+$'
     
     $ReturnObject = @()
     
     foreach ($n in $Name) {
         if ($IpMaskRx.Match($n).Success -or 
+            $IpRx.Match($n).Success -or 
             $ServiceRx.Match($n).Success -or 
             $ProtocolRx.Match($n).Success -or
             $IpRangeRx.Match($n).Success -or

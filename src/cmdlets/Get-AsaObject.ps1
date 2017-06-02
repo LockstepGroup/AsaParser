@@ -43,16 +43,21 @@ function Get-AsaObject {
             $KeepGoing = $true
             $Protocol  = $Match.Groups['protocol'].Value
             
-            $NewObject      = New-Object AsaParser.Object
-            $NewObject.Name = $Match.Groups['name'].Value
-            $NewObject.Type = $Match.Groups['type'].Value
-            
-            if ($Match.Groups['group'].Success) {
-                $NewObject.IsGroup = $true
+            $Lookup = $ReturnObject | Where-Object {$_.Name -ceq $Match.Groups['name'].Value }
+            if ($Lookup) {
+                $NewObject = $Lookup
+            } else {
+                $NewObject      = New-Object AsaParser.Object
+                $NewObject.Name = $Match.Groups['name'].Value
+                $NewObject.Type = $Match.Groups['type'].Value
+                
+                if ($Match.Groups['group'].Success) {
+                    $NewObject.IsGroup = $true
+                }
+                
+                $ReturnObject    += $NewObject
             }
-            
-            $ReturnObject    += $NewObject
-            
+
             Write-Verbose "$VerbosePrefix found object $($NewObject.Name)"
 			continue
 		}
@@ -142,6 +147,17 @@ function Get-AsaObject {
             $Eval             = HelperEvalRegex @EvalParams
             if ($Eval) {
                 $NewObject.Value += $Eval.Groups['start'].Value + "-" + $Eval.Groups['stop'].Value
+            }
+
+            # object nat
+            $EvalParams.Regex = [regex] "^\ nat\ \((?<srcint>.+?)\,(?<dstint>.+?)\)\ ((?<type>static)|dynamic\ (?<type>.+?))\ (?<nat>.+)"
+            $Eval             = HelperEvalRegex @EvalParams
+            if ($Eval) {
+                $NewObject.NatSourceInterface      = $Eval.Groups['srcint'].Value
+                $NewObject.NatDestinationInterface = $Eval.Groups['dstint'].Value
+                $NewObject.NatType                 = $Eval.Groups['type'].Value
+                $NewObject.NatSourceAddress        = $Eval.Groups['nat'].Value
+
             }
             
             # service-object
