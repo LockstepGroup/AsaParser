@@ -37,9 +37,16 @@ function Resolve-AsaObject {
         
         $Lookup = $ObjectArray | ? { $_.Name -ceq $n }
         if (!($Lookup)) {
-            Throw "$VerbosePrefix Cannot find $n"
+            $CheckBuiltin = HelperResolveBuiltinService $n
+            if ($CheckBuiltin) {
+                $Lookup = "" | Select Type,Value
+                $Lookup.Type = "service"
+                $Lookup.Value = $n
+            } else {
+                Throw "$VerbosePrefix Cannot find $n"
+            }
         }
-        
+
         switch ($Lookup.Type) {
             "address" {
                 foreach ($entry in $Lookup.Value) {
