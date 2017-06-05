@@ -59,6 +59,7 @@ function HelperResolveBuiltinService {
         "radius-acct" = "1646"
         "rip" = "520"
         "secureid-udp" = "5510"
+        "sip" = "5060"
         "smtp" = "25"
         "snmp" = "161"
         "snmptrap" = "162"
