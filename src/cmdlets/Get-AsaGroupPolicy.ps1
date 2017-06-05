@@ -60,6 +60,18 @@
 			continue
 		}
 
+        #More prompts and blank lines
+        $Regex = [regex] '^<'
+        $Match = HelperEvalRegex $Regex $line
+        if ($Match) {
+            continue
+        }
+        $Regex = [regex] '^\s+$'
+        $Match = HelperEvalRegex $Regex $line
+        if ($Match) {
+            continue
+        }
+
         # End object
         $Regex = [regex] "^[^\ ]"
 		$Match = HelperEvalRegex $Regex $line
